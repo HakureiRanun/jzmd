@@ -44,6 +44,7 @@ class DetailPageState extends State<DetailPage> {
             });
           },
           child: Container(
+            padding: EdgeInsets.all(10),
               child: Text(
             list[i]['title'],
             style: TextStyle(color: i == select ? Colors.blue : Colors.black),
