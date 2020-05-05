@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:jzmd/api.dart';
 import 'package:jzmd/base.dart';
 
@@ -23,7 +24,7 @@ class IndexPageState extends State<IndexPage> {
   }
 
   getList(index) async {
-    Response response = await baseApi('/latest/'+index.toString()+'.json');
+    Response response = await baseApi('/latest/' + index.toString() + '.json');
     setState(() {
       list.addAll(jsonDecode(response.toString()));
     });
@@ -40,47 +41,59 @@ class IndexPageState extends State<IndexPage> {
             padding: EdgeInsets.all(0),
             itemCount: list.length,
             itemBuilder: (BuildContext context, int index) {
-              if(index == list.length - 1){
-                getList((list.length/10).ceil());
+              if (index == list.length - 1) {
+                getList((list.length / 10).ceil());
               }
-              DateTime date = DateTime.fromMillisecondsSinceEpoch(list[index]['last_updatetime']*1000);
-              return Container(
+              DateTime date = DateTime.fromMillisecondsSinceEpoch(
+                  list[index]['last_updatetime'] * 1000);
+              return InkWell(
+                  onTap: (){
+                    Navigator.of(context).pushNamed('/detail',arguments: list[index]);
+                  },
+                  child: Container(
                 padding: EdgeInsets.all(10),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                  Container(
-                    width: 80,
-                    height: 100,
-                    color: Color(0xe5e5e5),
-                    child: Image(
-                      image: NetworkImage(
-                          'https://images.dmzj.com/' + list[index]['cover'],
-                          headers: {
-                            'Content-Type': 'image/png',
-                            'Referer': 'https://m.dmzj.com/latest.html',
-                            'User-Agent':
-                                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36'
-                          }),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(list[index]['name'] ?? '', style: TextStyle(fontSize: 20),),
-                          Text(list[index]['last_update_chapter_name'] ?? '',),
-                          Text(list[index]['types'] ?? '',),
-                          Text("${date.year.toString()}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2,'0')} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}")
-                        ]
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 100,
+                        color: Color(0xe5e5e5),
+                        child: Image(
+                          image: NetworkImage(
+                              'https://images.dmzj.com/' + list[index]['cover'],
+                              headers: {
+                                'Content-Type': 'image/png',
+                                'Referer': 'https://m.dmzj.com/latest.html',
+                                'User-Agent':
+                                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36'
+                              }),
+                        ),
                       ),
-                    ),
-                  )
-                ]),
-              );
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  list[index]['name'] ?? '',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                Text(
+                                  list[index]['last_update_chapter_name'] ?? '',
+                                ),
+                                Text(
+                                  list[index]['types'] ?? '',
+                                ),
+                                Text(
+                                    "${date.year.toString()}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}")
+                              ]),
+                        ),
+                      )
+                    ]),
+              ));
             }),
       ),
     );

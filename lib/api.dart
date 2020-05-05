@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 Dio dio = new Dio();
-const baseUrl = 'https://m.dmzj.com/';
+const baseUrl = 'https://m.dmzj.com';
 
 Future<Response> baseApi (url) async{
   Response response = await dio.get(baseUrl+url,options: Options(

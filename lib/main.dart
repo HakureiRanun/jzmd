@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jzmd/detail.dart';
 import 'package:jzmd/index.dart';
+import 'package:jzmd/read.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/index': (BuildContext context) => IndexPage(),
-        '/detail': (BuildContext context) => DetailPage()
+        '/detail': (BuildContext context) => DetailPage(),
+        '/read': (BuildContext context) => ReadPage()
       },
       home: IndexPage(),
     );
